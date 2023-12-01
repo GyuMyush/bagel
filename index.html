@@ -16,8 +16,8 @@
 		body { background-color: #000000; color: #ffffff; }
 		h1 { font-family: "Playfair Display"; font-size: 30px; padding: 10px 0px; margin: 0px; }
 		.field-box { border: 2px solid #d0d0d0; float: left; }
-		.field { position: relative; width: 1024px; height: 640px; }
-		.field .tile { position: absolute; width: 50px; height: 50px; background-size: 100%; background-image: url(images/tile-.png); z-index: 5; }
+		.field { position: relative; width: auto; height: auto; } /*изменил стандартные значения высоты и шарины игрового поля*/
+		.field .tile, td { width: 30px; height: 30px; background-size: 100%; background-image: url(images/tile-.png); z-index: 5; } /*изменил стандартные значения высоты и шарины ячейки*/
 		.field .tileW { background-image: url(images/tile-W.png); }
 		.field .tileE { background-image: url(images/tile-E.png); z-index: 10; }
 		.field .tileP { background-image: url(images/tile-P.png); z-index: 10; }
@@ -28,17 +28,18 @@
 		.inventory-box { border: 2px solid #d0d0d0; float: left; }
 		.inventory { position: relative; width: 800px; height: 32px; }
 		.cl { clear: both; display: block; }
+		table { border-spacing: 0px; } /*убрать*/
 	</style>
 	</head>
 	<body>
 		<h1>Игровое поле</h1>
 		<div class="field-box">
 			<div class="field">
-				<div class="tile">1</div>
-				<div class="tile">2</div>
 			</div>
 		</div>
+		
 		<div class="cl"></div>
+
 		<h1>Инвентарь</h1>
 		<div class="inventory-box">
 			<div class="inventory">
@@ -47,8 +48,88 @@
 		</div>
 
 		<script>
-			
+			let width = 40;
+			let height = 24;
 
+			var fieldArr = []
+			function createMap(width, height) {
+
+				for (let i = 1; i <= height; i++) {
+					let rowArr = [];
+
+					for (let j = 1; j <= width; j++) {
+						rowArr.push('tileW');
+					}
+					fieldArr.push(rowArr);
+				}
+				return fieldArr;
+			};
+			
+			// функция отрисовки
+			function renderMap(arr) {
+				let tableContainer = document.querySelector('.field');
+				let table = document.createElement('table');
+
+				for (let i = 0; i < arr.length; i++) {
+					let row = document.createElement('tr');
+
+					for (let j = 0; j < arr[i].length; j++) {
+						let cell = document.createElement('td');
+						cell.classList.add(arr[i][j]);
+						row.appendChild(cell);
+					}
+					table.appendChild(row);
+				}
+				tableContainer.appendChild(table);
+			}
+			
+			let x = 6,
+				y = 6;
+			function movePers(x, y) {
+				fieldArr[x][y] = 'tileP';
+			}
+
+			// функция управления персонажем
+			document.addEventListener('keydown', function(event) {
+				const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd', 'W', 'A', 'S', 'D', 'ц', 'ф', 'ы', 'в', 'Ц', 'Ф', 'Ы', 'В',];
+				if (keys.includes(event.key)) {
+					event.preventDefault(); // Предотвращаем стандартное поведение страницы при нажатии клавиш
+				}
+
+				// Пример обработки нажатия клавиш
+				switch (event.key) {
+					case 'ArrowUp':
+					case 'w':
+						// Действие при нажатии клавиши "Вверх" или "W"
+						// Ваш код здесь
+						console.log('Нажата клавиша "Вверх" или "W"');
+						break;
+					case 'ArrowDown':
+					case 's':
+						// Действие при нажатии клавиши "Вниз" или "S"
+						// Ваш код здесь
+						console.log('Нажата клавиша "Вниз" или "S"');
+						break;
+					case 'ArrowLeft':
+					case 'a':
+						// Действие при нажатии клавиши "Влево" или "A"
+						// Ваш код здесь
+						console.log('Нажата клавиша "Влево" или "A"');
+						break;
+					case 'ArrowRight':
+					case 'd':
+						// Действие при нажатии клавиши "Вправо" или "D"
+						// Ваш код здесь
+						console.log('Нажата клавиша "Вправо" или "D"');
+						break;
+					default:
+						break;
+				}
+			});
+
+			createMap(width, height);
+			movePers(6, 6);
+			renderMap(fieldArr);
 			// var game=new Game();
 			// game.init();
 		</script>
