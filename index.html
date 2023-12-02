@@ -48,8 +48,8 @@
 		</div>
 
 		<script>
-			let width = 40;
-			let height = 24;
+			let width = 40, // ширина поля
+				height = 24; // высота поля
 
 			var fieldArr = []
 			function createMap(width, height) {
@@ -69,6 +69,8 @@
 			function renderMap(arr) {
 				let tableContainer = document.querySelector('.field');
 				let table = document.createElement('table');
+				
+				tableContainer.innerHTML='';
 
 				for (let i = 0; i < arr.length; i++) {
 					let row = document.createElement('tr');
@@ -83,52 +85,118 @@
 				tableContainer.appendChild(table);
 			}
 			
-			let x = 6,
-				y = 6;
-			function movePers(x, y) {
-				fieldArr[x][y] = 'tileP';
+			let xPers = 6,
+				yPers = 6;
+			function movePers(xPers, yPers) {
+				fieldArr[yPers][xPers] = 'tileP';
 			}
 
-			// функция управления персонажем
+			// document.addEventListener('keydown', function(event) {
+			// 	const keyCodes = {
+			// 		ArrowUp: 38,
+			// 		ArrowDown: 40,
+			// 		ArrowLeft: 37,
+			// 		ArrowRight: 39,
+			// 		w: 87,
+			// 		a: 65,
+			// 		s: 83,
+			// 		d: 68
+			// 	};
+
+			// 	// Если код клавиши совпадает с одним из кодов в keyCodes, выполняем действие
+			// 	if (Object.values(keyCodes).includes(event.keyCode)) {
+			// 		event.preventDefault(); // Предотвращаем стандартное поведение страницы при нажатии клавиш
+			// 	}
+
+			// 	// Пример обработки нажатия клавиш
+			// 	switch (event.keyCode) {
+			// 		case keyCodes.ArrowUp:
+			// 		case keyCodes.w:
+			// 			// Действие при нажатии клавиши "Вверх" или "W"
+			// 			fieldArr[yPers][xPers] = 'tileW';
+			// 			yPers--;
+			// 			movePers(xPers, yPers);
+			// 			renderMap(fieldArr);
+			// 			// console.log('Нажата клавиша "Вверх" или "W"');
+			// 			break;
+			// 		case keyCodes.ArrowDown:
+			// 		case keyCodes.s:
+			// 			// Действие при нажатии клавиши "Вниз" или "S"
+			// 			fieldArr[yPers][xPers] = 'tileW';
+			// 			yPers++;
+			// 			movePers(xPers, yPers);
+			// 			renderMap(fieldArr);
+			// 			// console.log('Нажата клавиша "Вниз" или "S"');
+			// 			break;
+			// 		case keyCodes.ArrowLeft:
+			// 		case keyCodes.a:
+			// 			// Действие при нажатии клавиши "Влево" или "A"
+			// 			fieldArr[yPers][xPers] = 'tileW';
+			// 			xPers--;
+			// 			movePers(xPers, yPers);
+			// 			renderMap(fieldArr);
+			// 			// console.log('Нажата клавиша "Влево" или "A"');
+			// 			break;
+			// 		case keyCodes.ArrowRight:
+			// 		case keyCodes.d:
+			// 			// Действие при нажатии клавиши "Вправо" или "D"
+			// 			fieldArr[yPers][xPers] = 'tileW';
+			// 			xPers++;
+			// 			movePers(xPers, yPers);
+			// 			renderMap(fieldArr);
+			// 			// console.log('Нажата клавиша "Вправо" или "D"');
+			// 			break;
+			// 		default:
+			// 			break;
+			// 	}
+			// });
+
+
 			document.addEventListener('keydown', function(event) {
-				const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd', 'W', 'A', 'S', 'D', 'ц', 'ф', 'ы', 'в', 'Ц', 'Ф', 'Ы', 'В',];
-				if (keys.includes(event.key)) {
+				const keyCodes = {
+					ArrowUp: 38,
+					ArrowDown: 40,
+					ArrowLeft: 37,
+					ArrowRight: 39,
+					w: 87,
+					a: 65,
+					s: 83,
+					d: 68 
+				};
+
+				const keyPressed = event.key || event.keyCode;
+
+				if (Object.values(keyCodes).includes(event.keyCode)) {
 					event.preventDefault(); // Предотвращаем стандартное поведение страницы при нажатии клавиш
 				}
 
-				// Пример обработки нажатия клавиш
-				switch (event.key) {
-					case 'ArrowUp':
-					case 'w':
-						// Действие при нажатии клавиши "Вверх" или "W"
-						// Ваш код здесь
-						console.log('Нажата клавиша "Вверх" или "W"');
-						break;
-					case 'ArrowDown':
-					case 's':
-						// Действие при нажатии клавиши "Вниз" или "S"
-						// Ваш код здесь
-						console.log('Нажата клавиша "Вниз" или "S"');
-						break;
-					case 'ArrowLeft':
-					case 'a':
-						// Действие при нажатии клавиши "Влево" или "A"
-						// Ваш код здесь
-						console.log('Нажата клавиша "Влево" или "A"');
-						break;
-					case 'ArrowRight':
-					case 'd':
-						// Действие при нажатии клавиши "Вправо" или "D"
-						// Ваш код здесь
-						console.log('Нажата клавиша "Вправо" или "D"');
-						break;
-					default:
-						break;
+				const moveAction = {
+					ArrowUp: { y: -1, x: 0 },
+					w: { y: -1, x: 0 },
+					ArrowDown: { y: 1, x: 0 },
+					s: { y: 1, x: 0 },
+					ArrowLeft: { y: 0, x: -1 },
+					a: { y: 0, x: -1 },
+					ArrowRight: { y: 0, x: 1 },
+					d: { y: 0, x: 1 }
+				};
+
+				const direction = moveAction[event.key || event.keyCode];
+
+				if (direction) {
+					fieldArr[yPers][xPers] = 'tileW';
+					yPers += direction.y;
+					xPers += direction.x;
+					movePers(xPers, yPers);
+					renderMap(fieldArr);
 				}
 			});
 
+
+
+
 			createMap(width, height);
-			movePers(6, 6);
+			movePers(xPers, xPers);
 			renderMap(fieldArr);
 			// var game=new Game();
 			// game.init();
